@@ -84,14 +84,14 @@ func (s *PriceHistoryService) PriceHistory(ctx context.Context, symbol string, o
 }
 
 func (opts *PriceHistoryOptions) validate() error {
-	if opts.PeriodType != nil {
-		if !contains(*opts.PeriodType, validPeriodTypes) {
+	if opts.PeriodType != "" {
+		if !contains(opts.PeriodType, validPeriodTypes) {
 			return fmt.Errorf("invalid periodType, must have the value of one of the following %v", validPeriodTypes)
 		}
 	}
 
-	if opts.FrequencyType != nil {
-		if !contains(*opts.FrequencyType, validFrequencyTypes) {
+	if opts.FrequencyType != "" {
+		if !contains(opts.FrequencyType, validFrequencyTypes) {
 			return fmt.Errorf("invalid frequencyType, must have the value of one of the following %v", validFrequencyTypes)
 		}
 	}
