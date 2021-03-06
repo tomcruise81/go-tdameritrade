@@ -3,18 +3,21 @@ package tdameritrade
 import (
 	"context"
 	"fmt"
-	"github.com/google/go-querystring/query"
 	"time"
+
+	"github.com/google/go-querystring/query"
 )
 
 var (
-	validPeriodTypes = []string{"day", "month", "year", "ytd"}
+	validPeriodTypes    = []string{"day", "month", "year", "ytd"}
 	validFrequencyTypes = []string{"minute", "daily", "weekly", "monthly"}
 )
 
 const (
-	defaultPeriodType = "day"
-	defaultFrequencyType = "minute"
+	// DefaultPeriodType is the default value for PeriodType
+	DefaultPeriodType = "day"
+	// DefaultFrequencyType is the default value for FrequencyType
+	DefaultFrequencyType = "minute"
 )
 
 // PriceHistoryService handles communication with the marketdata related methods of
@@ -27,19 +30,19 @@ type PriceHistoryService struct {
 
 // PriceHistoryOptions is parsed and translated to query options in the https request
 type PriceHistoryOptions struct {
-	PeriodType            string    `url:"periodType"`
-	Period                int       `url:"period"`
-	FrequencyType         string    `url:"frequencyType"`
-	Frequency             int       `url:"frequency"`
-	EndDate               time.Time `url:"endDate"`
-	StartDate             time.Time `url:"startDate"`
-	NeedExtendedHoursData *bool      `url:"needExtendedHoursData"`
+	PeriodType            *string    `url:"periodType,omitempty"`
+	Period                *int       `url:"period,omitempty"`
+	FrequencyType         *string    `url:"frequencyType,omitempty"`
+	Frequency             *int       `url:"frequency,omitempty"`
+	EndDate               *time.Time `url:"endDate,omitempty"`
+	StartDate             *time.Time `url:"startDate,omitempty"`
+	NeedExtendedHoursData *bool      `url:"needExtendedHoursData,omitempty"`
 }
 
 type PriceHistory struct {
 	Candles []struct {
 		Close    float64 `json:"close"`
-		Datetime int `json:"datetime"`
+		Datetime int     `json:"datetime"`
 		High     float64 `json:"high"`
 		Low      float64 `json:"low"`
 		Open     float64 `json:"open"`
@@ -81,20 +84,16 @@ func (s *PriceHistoryService) PriceHistory(ctx context.Context, symbol string, o
 }
 
 func (opts *PriceHistoryOptions) validate() error {
-	if opts.PeriodType != "" {
-		if !contains(opts.PeriodType, validPeriodTypes) {
+	if opts.PeriodType != nil {
+		if !contains(*opts.PeriodType, validPeriodTypes) {
 			return fmt.Errorf("invalid periodType, must have the value of one of the following %v", validPeriodTypes)
 		}
-	} else {
-		opts.PeriodType = defaultPeriodType
 	}
 
-	if opts.FrequencyType != "" {
-		if !contains(opts.FrequencyType, validFrequencyTypes) {
+	if opts.FrequencyType != nil {
+		if !contains(*opts.FrequencyType, validFrequencyTypes) {
 			return fmt.Errorf("invalid frequencyType, must have the value of one of the following %v", validFrequencyTypes)
 		}
-	} else {
-		opts.PeriodType = defaultFrequencyType
 	}
 
 	return nil
@@ -108,4 +107,3 @@ func contains(s string, lst []string) bool {
 	}
 	return false
 }
-
