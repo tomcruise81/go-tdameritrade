@@ -46,13 +46,13 @@ func (t *EncodeableTime) EncodeValues(key string, v *url.Values) error {
 
 // PriceHistoryOptions is parsed and translated to query options in the https request
 type PriceHistoryOptions struct {
-	PeriodType            string        `url:"periodType,omitempty"`
-	Period                int           `url:"period,omitempty"`
-	FrequencyType         string        `url:"frequencyType,omitempty"`
-	Frequency             int           `url:"frequency,omitempty"`
-	EndDate               EncodableTime `url:"endDate,omitempty"`
-	StartDate             EncodableTime `url:"startDate,omitempty"`
-	NeedExtendedHoursData *bool         `url:"needExtendedHoursData,omitempty"`
+	PeriodType            string         `url:"periodType,omitempty"`
+	Period                int            `url:"period,omitempty"`
+	FrequencyType         string         `url:"frequencyType,omitempty"`
+	Frequency             int            `url:"frequency,omitempty"`
+	EndDate               EncodeableTime `url:"endDate,omitempty"`
+	StartDate             EncodeableTime `url:"startDate,omitempty"`
+	NeedExtendedHoursData *bool          `url:"needExtendedHoursData,omitempty"`
 }
 
 type PriceHistory struct {
