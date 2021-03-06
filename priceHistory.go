@@ -29,11 +29,15 @@ type PriceHistoryService struct {
 	client *Client
 }
 
-type EncodableTime struct {
+// EncodeableTime offers support for appropriate query encoding.
+//
+// TDAmeritrade API docs: https://developer.tdameritrade.com/price-history/apis
+type EncodeableTime struct {
 	time.Time
 }
 
-func (t *EncodableTime) EncodeValues(key string, v *url.Values) error {
+// EncodeValues does the encoding
+func (t *EncodeableTime) EncodeValues(key string, v *url.Values) error {
 	if !t.IsZero() {
 		v.Add(key, fmt.Sprintf("%v", t.UnixNano()/int64(time.Millisecond)))
 	}
