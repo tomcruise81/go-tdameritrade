@@ -3,6 +3,7 @@ package tdameritrade
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"time"
 
 	"github.com/google/go-querystring/query"
@@ -28,15 +29,26 @@ type PriceHistoryService struct {
 	client *Client
 }
 
+type EncodableTime struct {
+	time.Time
+}
+
+func (t *EncodableTime) EncodeValues(key string, v *url.Values) error {
+	if !t.IsZero() {
+		v.Add(key, fmt.Sprintf("%v", t.UnixNano()/int64(time.Millisecond)))
+	}
+	return nil
+}
+
 // PriceHistoryOptions is parsed and translated to query options in the https request
 type PriceHistoryOptions struct {
-	PeriodType            string    `url:"periodType,omitempty"`
-	Period                int       `url:"period,omitempty"`
-	FrequencyType         string    `url:"frequencyType,omitempty"`
-	Frequency             int       `url:"frequency,omitempty"`
-	EndDate               time.Time `url:"endDate,omitempty"`
-	StartDate             time.Time `url:"startDate,omitempty"`
-	NeedExtendedHoursData *bool     `url:"needExtendedHoursData,omitempty"`
+	PeriodType            string        `url:"periodType,omitempty"`
+	Period                int           `url:"period,omitempty"`
+	FrequencyType         string        `url:"frequencyType,omitempty"`
+	Frequency             int           `url:"frequency,omitempty"`
+	EndDate               EncodableTime `url:"endDate,omitempty"`
+	StartDate             EncodableTime `url:"startDate,omitempty"`
+	NeedExtendedHoursData *bool         `url:"needExtendedHoursData,omitempty"`
 }
 
 type PriceHistory struct {
