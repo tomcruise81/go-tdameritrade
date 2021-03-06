@@ -30,13 +30,13 @@ type PriceHistoryService struct {
 
 // PriceHistoryOptions is parsed and translated to query options in the https request
 type PriceHistoryOptions struct {
-	PeriodType            *string    `url:"periodType,omitempty"`
-	Period                *int       `url:"period,omitempty"`
-	FrequencyType         *string    `url:"frequencyType,omitempty"`
-	Frequency             *int       `url:"frequency,omitempty"`
-	EndDate               *time.Time `url:"endDate,omitempty"`
-	StartDate             *time.Time `url:"startDate,omitempty"`
-	NeedExtendedHoursData *bool      `url:"needExtendedHoursData,omitempty"`
+	PeriodType            string    `url:"periodType,omitempty"`
+	Period                int       `url:"period,omitempty"`
+	FrequencyType         string    `url:"frequencyType,omitempty"`
+	Frequency             int       `url:"frequency,omitempty"`
+	EndDate               time.Time `url:"endDate,omitempty"`
+	StartDate             time.Time `url:"startDate,omitempty"`
+	NeedExtendedHoursData *bool     `url:"needExtendedHoursData,omitempty"`
 }
 
 type PriceHistory struct {
